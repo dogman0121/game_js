@@ -135,14 +135,12 @@ class Game {
         for (let i = y0; i <= y1; i++){
             cordX1 = Math.ceil(x0 + dx1 / dy1 * (i - y0));
             cordX2 = Math.ceil(x0 + dx2 / dy2 * (i - y0));
-            console.log(cordX1, cordX2, i);
             this.createLine(cordX1, i, cordX2, i, rgba);
         }
 
         for (let i = y1; i <= y2; i++){
             cordX1 = Math.ceil(x0 + dx2 / dy2 * (i - y0));
             cordX2 = Math.ceil(x1 + dx3 / dy3 * (i - y1));
-            console.log(cordX1, cordX2, i);
             this.createLine(cordX1, i, cordX2, i, rgba);
         }
     }
