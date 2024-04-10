@@ -26,64 +26,20 @@ class Game {
     createLine(x0, y0, x1, y1, rgba) {
         let dx = Math.abs(x1 - x0);
         let dy = Math.abs(y1 - y0);
-        let grad = dy / dx;
-
-        if (grad < 1){
-            if (x0 > x1){
-                let tmp;
-                tmp = x0;
-                x0 = x1;
-                x1 = tmp;
-
-                tmp = y0;
-                y0 = y1;
-                y1 = tmp;
+        let signX = x1 - x0 > 0 ? 1: -1; 
+        let signY = y1 - y0 > 0 ? 1: -1;
+        let error = 0;
+        let x = x0;
+        let y = y0;
+        while(x != x1 || y != y1){
+            this.createPixel(x, y, rgba);
+            if (error < dx) {
+                error += dy;
+                x += signX;
             }
-            let y = y0;
-            let x = x0;
-            let error = 0;
-            let shift = dy + 1;
-            let sign = y1 - y0;
-            if (sign >= 0)
-                sign = 1;
-            else
-                sign = -1;
-            for (let i = 0; i <= dx; i++){
-                this.createPixel(x + i, y, rgba);
-                error += shift;
-                if (error >= dx + 1){
-                    error -= (dx + 1);
-                    y += sign;
-                }
-            }
-        }
-        else {
-            if (y0 > y1){
-                let tmp;
-                tmp = y0;
-                y0 = y1;
-                y1 = tmp;
-
-                tmp = x0;
-                x0 = x1;
-                x1 = tmp;
-            }
-            let y = y0;
-            let x = x0;
-            let error = 0;
-            let shift = dx + 1;
-            let sign = x1 - x0;
-            if (sign >= 0)
-                sign = 1;
-            else
-                sign = -1;
-            for (let i = 0; i <= dy; i++){
-                this.createPixel(x, y + i, rgba);
-                error += shift;
-                if (error >= dy + 1){
-                    error -= (dy + 1);
-                    x += sign;
-                }
+            if (error >= dx) {
+                y += signY;
+                error -= dx;
             }
         }
     }
@@ -135,14 +91,12 @@ class Game {
         for (let i = y0; i <= y1; i++){
             cordX1 = Math.ceil(x0 + dx1 / dy1 * (i - y0));
             cordX2 = Math.ceil(x0 + dx2 / dy2 * (i - y0));
-            console.log(cordX1, cordX2, i);
             this.createLine(cordX1, i, cordX2, i, rgba);
         }
 
         for (let i = y1; i <= y2; i++){
             cordX1 = Math.ceil(x0 + dx2 / dy2 * (i - y0));
             cordX2 = Math.ceil(x1 + dx3 / dy3 * (i - y1));
-            console.log(cordX1, cordX2, i);
             this.createLine(cordX1, i, cordX2, i, rgba);
         }
     }
